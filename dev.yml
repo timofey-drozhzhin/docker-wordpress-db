@@ -1,0 +1,39 @@
+version: '3'
+services:
+  wordpress:
+    build:
+      context: ./docker-settings/wordpress
+      args:
+        - BUILD_ENV=development
+    volumes:
+      - ./site:/var/www/html/wp-content
+    env_file:
+      - .env
+      - .env.dev
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    links:
+      - db:mysql
+  db:
+    image: mariadb:10.3
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
+      - .env.dev
+    restart: always
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+        - db:mysql
+    ports:
+        - 8080:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      PMA_HOST: mysql
