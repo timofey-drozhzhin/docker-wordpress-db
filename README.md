@@ -19,8 +19,8 @@ Apache2. DB is a MYSQL server built on MariaDB.
 `ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa`
 - Copy the SSH Key and add it to BitBucket Readonly access, to give the server access to repo
 `cat /root/.ssh/id_rsa.pub`
-- Pull the repo to production server (Make sure the REPO_URL is defined in .env)
-`git clone $REPO_URL /root/web`
+- Pull the repo to production server
+`git clone git@bitbucket.org:timofey-com/{repo name}.git /root/web`
 - Start the server
 `cd /root/web`
 `docker-compose -f prod.yml up -d`
